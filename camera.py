@@ -18,8 +18,9 @@ def complex_camera(camera,target_rect):
     l, t, _, _ = -l+400, -t + 300, w, h
     
     l = min(0,l)
-    l = max(-(camera.w-800),l)
+    l = max(-(camera.w),l)
     t = max(-(camera.h-600),t)
     t = min(0,t)
+
     
     return Rect(l, t, w, h)

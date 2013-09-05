@@ -7,6 +7,7 @@ from menu import Menu
 from img_n_sound import *
 from editor import Editor
 from game import Game
+#must import this to not make error for cx_Freeze. Reason unknown
 import re
 
 class Main:
@@ -16,12 +17,14 @@ class Main:
         
         resolution = (800, 600)
         self.screen = pygame.display.set_mode(resolution)
+        
         self.surface = pygame.Surface(self.screen.get_size())
         pygame.display.set_caption('Parkour Simulator')
         #background surface setting
         bg = pygame.Surface((800,600))
         bg.convert()
         bg.fill(Color("#FFFFFF"))
+
         pygame.display.flip()
         #clock is set to choose the fps
         self.clock = pygame.time.Clock()
@@ -30,6 +33,9 @@ class Main:
         #Then it sets the mode to menu
         self.selected_mode = 'Menu'
         self.current_mode = None
+        
+        
+        
         #Finally, the mainloop starts
         self.main_loop()
         

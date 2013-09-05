@@ -3,21 +3,12 @@ from pygame.locals import *
 import xml.etree.ElementTree as ET
 from img_n_sound import *
 from camera import *
+from platform import Platform
+from object import Object
 
 
-black = Color("#000000")
 
-class Platform(pygame.sprite.Sprite):
-    def __init__(self, x, y, w, h, tx,ty):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = load_tileset(25,25,tx,ty)
-        self.rect = Rect(x,y,w,h)
-        
 
-    def update(self):
-        pass
-    
-    
 class Map():
     def __init__(self):
         self.platforms = []
@@ -34,9 +25,8 @@ class Map():
             for o in r:
                 
                 if o.tag == 'tile':
-                    print(o.attrib)
-                    
-                    target = Platform(int(o.attrib['x'])*25,int(o.attrib['y'])*25,25,25,int(o.attrib['tx']),int(o.attrib['ty']))
+                    size = 25
+                    target = Platform(int(o.attrib['x'])*size,int(o.attrib['y'])*size,int(o.attrib['tx']),int(o.attrib['ty']),size)
                     self.platforms.append(target)
                 
                 else:

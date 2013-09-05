@@ -6,7 +6,7 @@ class Button:
         self.size = size
         self.text = text
         
-        font = pygame.font.Font('freesansbold.ttf',size)
+        font = pygame.font.Font('data/fonts/freesansbold.ttf',size)
         self.name = font.render(text, 1, (100,100,100))
         self.rect = self.name.get_rect()
         
@@ -20,8 +20,7 @@ class Button:
     def get_pos(self):
         return self.rect.left,self.rect.top
         
-    def selected(self,surface):
-        surface.blit(self.selected,self.rect)
+
     
 
         

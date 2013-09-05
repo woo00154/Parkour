@@ -38,7 +38,7 @@ class Menu(Mode):
             self.surface.blit(b.name,b.rect) 
         #create another surface to show the rectangle (the chosen button)
         self.selected = pygame.Surface((w,h))
-        self.selected.fill((100,100,100))
+
         #return button_list so we can save to self.buttons 
         return button_list
 
