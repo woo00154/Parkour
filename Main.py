@@ -21,7 +21,7 @@ class Main:
         self.surface = pygame.Surface(self.screen.get_size())
         pygame.display.set_caption('Parkour Simulator')
         #background surface setting
-        bg = pygame.Surface((800,600))
+        bg = pygame.Surface(resolution)
         bg.convert()
         bg.fill(Color("#FFFFFF"))
 
@@ -51,7 +51,8 @@ class Main:
                 elif self.selected_mode == 'Menu':
                     self.current_mode = Menu(['Start','Editor','Quit'],self.screen)
                 elif self.selected_mode == 'Editor':
-                    self.current_mode = Editor(self.screen)
+                    #self.current_mode = Editor(self.screen)
+                    raise SystemExit
                 elif self.selected_mode == 'Quit':
                     raise SystemExit
             #if the current_mode exist, run its loop    

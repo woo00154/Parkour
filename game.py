@@ -41,6 +41,9 @@ class Game(Mode):
                     self.set_button('run',True)
                 if e.key == K_DOWN:
                     self.set_button('down',True)
+                if e.key == K_z:
+                    self.set_button('jump',True)    
+                
                 if e.key == K_r:
                     self.player.set_pos(50,200)
                 if e.key == K_t:
@@ -63,6 +66,8 @@ class Game(Mode):
                     self.set_button('up',False)
                 if e.key == K_DOWN:
                     self.set_button('down',False)
+                if e.key == K_z:
+                    self.set_button('jump',False)    
 
 
             elif e.type == QUIT:

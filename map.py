@@ -26,6 +26,7 @@ class Map():
                 
                 if o.tag == 'tile':
                     size = 25
+                    
                     target = Platform(int(o.attrib['x'])*size,int(o.attrib['y'])*size,int(o.attrib['tx']),int(o.attrib['ty']),size)
                     self.platforms.append(target)
                 

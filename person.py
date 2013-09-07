@@ -25,6 +25,8 @@ class Person(Entity):
         self.gravity.apply(self)
         # increment in x direction
         self.rect.left += self.xvel
+        
+        self.hanging = self.onWall_R = self.onWall_L = False
         # do x-axis collisions
         self.collide(self.xvel, 0, platforms)
         # increment in y direction
@@ -40,8 +42,20 @@ class Person(Entity):
             if pygame.sprite.collide_rect(self, p):
                 if xvel > 0:
                     self.rect.right = p.rect.left
+                    self.onWall_R = True
+                    self.xvel = 0
+                    if p.type == (2,0) and -2 <= self.rect.top- p.rect.top<=2:
+                        self.yvel = 0
+                        self.hanging = True
                 if xvel < 0:
                     self.rect.left = p.rect.right
+                    self.onWall_L = True
+                    self.xvel = 0
+                    
+                    if p.type == (2,0) and -2<=self.rect.top- p.rect.top<=2:
+                        self.yvel = 0
+                        self.hanging = True
+
                 if yvel > 0:                    
                     self.rect.bottom = p.rect.top
                     self.onGround = True
