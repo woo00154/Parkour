@@ -5,13 +5,14 @@ from inputhandler import InputHandler
 
 class Player(Person):
     
-    def __init__(self,x=100,y=100):
-        Person.__init__(self,x,y,'player.png')
+    def __init__(self,spawn_x=100,spawn_y=100):
+        Person.__init__(self,spawn_x,spawn_y,'player.png')
         self.inputhandler = InputHandler()
         self.admin = self.physics = self.parkour = False
         self.add_basic_movement()
         self.add_physics()
         self.add_parkour()
+        self.add_stats()
         
     def add_basic_movement(self):
         self.jumping = self.onGround = False
@@ -25,6 +26,12 @@ class Player(Person):
     def add_parkour(self):
         self.parkour = True
         self.hanging = self.onWall_R = self.onWall_L = self.climb = False
+    
+    def reset(self,entity):
+        Person.reset(self,entity)
+        self.health = 100
+        self.dead = False
+        self.add_physics()
         
         
     def add_physics(self):
@@ -33,8 +40,16 @@ class Player(Person):
         self.speed_limit = 4
         self.walk_limit = 4
         self.run_limit = 8
-        self.wall_slide_limit = 15
+        self.fall_time = 0
+        self.wall_slide_limit = 20
         self.wall_slide_time = 0
+        self.control = True
+        
+    def add_stats(self):
+        self.health = 100
+        self.exp = 0
+        self.level = 1
+        
         
     def get_button(self,button):
         return self.inputhandler.button_list[button]
@@ -42,9 +57,7 @@ class Player(Person):
     def set_button(self,button,state):
         self.inputhandler.button_list[button] = state
         
-    def set_pos(self,x,y):
-        self.rect.left = x
-        self.rect.top = y
+
         
     def admin_tick(self):
         #allows the player to float around
@@ -63,18 +76,18 @@ class Player(Person):
         
     def x_movement(self):
         if self.physics:
-            if self.get_button('right') and not self.get_button('left') and (not self.jumping or self.onWall or self.climb):
+            if self.get_button('right') and not self.get_button('left') and self.control:
                 if self.xvel <= self.speed_limit:
                     self.xvel += self.acc
                 else:
                     self.xvel -= self.acc
-            elif self.get_button('left') and not self.get_button('right') and (not self.jumping or self.onWall or self.climb):
+            elif self.get_button('left') and not self.get_button('right') and self.control:
                 if self.xvel >= -self.speed_limit:
                     self.xvel -= self.acc
                 else:
                     self.xvel += self.acc
-            elif (self.get_button('left') and self.get_button('right') and (not self.jumping or self.onWall or self.climb)) or \
-                (not self.get_button('left') and not self.get_button('right') and (not self.jumping or self.onWall or self.climb)):
+            elif (self.get_button('left') and self.get_button('right') and self.control) or \
+                (not self.get_button('left') and not self.get_button('right') and self.control):
                 if self.xvel != 0:
                     self.xvel /= 2
                     if -1< self.xvel < 1:
@@ -107,10 +120,10 @@ class Player(Person):
             #wall jump
             if self.get_button('jump'):
                 
-                if self.onWall_R:
+                if self.onWall_R and self.get_button('right') and not self.get_button('left'):
                     self.yvel = -15
                     self.xvel = -5
-                elif self.onWall_L:
+                elif self.onWall_L and not self.get_button('right') and self.get_button('left'):
                     self.yvel = -15
                     self.xvel = 5
             #climb
@@ -122,13 +135,23 @@ class Player(Person):
             self.wall_slide_time = 0
         
     def tick(self,platforms):
+        #check if the character is dead or not
+        if self.health <= 0:
+            self.dead = True
+        #make sure the charater has the control at certain point
+        if not self.jumping or self.onWall or self.climb or self.hanging:
+            self.control = True
+        else:
+            self.control = False
         
+
         self.onWall = self.onWall_L or self.onWall_R
         #all the x-component movements
         self.x_movement()
         #all wall-related movements
+
         self.wall_movement()
-        print(self.wall_slide_time)
+        
         #all the y-component movements    
         if self.onGround:
             self.jumping = self.climb = False
@@ -143,7 +166,15 @@ class Player(Person):
 
         
 
-        
+
         
         Person.tick(self,platforms)
+        
+        if self.yvel > 0 and not self.onWall:
+            
+            self.fall_time+=1
+        elif self.onGround:
+            self.health -= int(self.fall_time/25) * 100
+        if self.yvel <= 0:
+            self.fall_time = 0
     

@@ -1,16 +1,15 @@
-from entity import Entity
+from image import Image
 import pygame
 from gravity import Gravity
 from img_n_sound import *
 from vector import Vector
 
-class Person(Entity):
+class Person(Image):
     
     def __init__(self,x,y,image):
-        self.image,self.rect = load_image(image)
-        Entity.__init__(self,x,y,self.rect.w,self.rect.h)
-        self.rect.left = x
-        self.rect.top = y
+        Image.__init__(self,x,y,image)
+        self.spawn_x = x
+        self.spawn_y = y
         self.xvel = 0
         self.yvel = 0
 
@@ -19,7 +18,15 @@ class Person(Entity):
     def load_images(self):
         pass
     
-
+    def reset(self,entity):
+        if self in entity:
+            entity.remove(self)
+        entity.append(self)
+        self.set_pos(self.spawn_x,self.spawn_y)
+    
+    def set_pos(self,x,y):
+        self.rect.left = x
+        self.rect.top = y
     
     def tick(self,platforms):
         self.gravity.apply(self)
@@ -44,7 +51,8 @@ class Person(Entity):
                     self.rect.right = p.rect.left
                     self.onWall_R = True
                     self.xvel = 0
-                    if p.type == (2,0) and -2 <= self.rect.top- p.rect.top<=2:
+                    if p.type == (2,0) and -3 <= self.rect.top- p.rect.top<=3:
+                        
                         self.yvel = 0
                         self.hanging = True
                 if xvel < 0:

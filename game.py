@@ -15,12 +15,13 @@ class Game(Mode):
         #now do all the intial stuff
         self.surface.fill((255,255,255))
         screen.blit(self.surface,(0,0))
-        self.stage = Stage()
-        self.stage.load_stage('parkour')
+        self.stage = Stage(screen.get_size())
+        self.stage.load_stage('Stage_1')
         self.map = self.stage.rooms[0]
         self.fade = Fade(screen,'in',3)
         #add player
-        self.player = Player(50,200)
+        self.player = Player(self.map.spawn_x,self.map.spawn_y)
+        
         self.map.entity.append(self.player)
     
     def set_button(self,button,state):
@@ -28,6 +29,9 @@ class Game(Mode):
         
     def tick(self,events):
         
+        for e in self.map.entity:
+            if e.dead:
+                self.map.entity.remove(e)
         for e in events:
             if e.type == KEYDOWN:
                 if e.key == K_RIGHT:
@@ -45,7 +49,7 @@ class Game(Mode):
                     self.set_button('jump',True)    
                 
                 if e.key == K_r:
-                    self.player.set_pos(50,200)
+                    self.player.reset(self.map.entity)
                 if e.key == K_t:
                     if not self.player.admin:
                         self.player.admin = True
@@ -73,8 +77,9 @@ class Game(Mode):
             elif e.type == QUIT:
                 pygame.display.quit()
                 sys.exit()
-        if self.fade.loop():
-            self.map.camera.update(self.player)
+        self.fade.loop()
+        self.map.camera.update(self.player)
+        if not self.player.dead:
             if not self.player.admin:
                 self.player.tick(self.map.platforms)
             elif self.player.admin:
