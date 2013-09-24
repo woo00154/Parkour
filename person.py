@@ -29,7 +29,7 @@ class Person(Image):
         self.rect.top = y
     
     def tick(self,platforms):
-        self.gravity.apply(self)
+        
         # increment in x direction
         self.rect.left += self.xvel
         

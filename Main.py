@@ -14,17 +14,18 @@ class Main:
     def __init__(self):
         #pygame setup
         pygame.init()
-        
-        resolution = (800, 600)
+        #set resolution and screen size
+        resolution = (800, 800)
         self.screen = pygame.display.set_mode(resolution)
-        
+        #create main surface to draw everything on.
         self.surface = pygame.Surface(self.screen.get_size())
         pygame.display.set_caption('Parkour Simulator')
+        
         #background surface setting
         bg = pygame.Surface(resolution)
         bg.convert()
         bg.fill(Color("#FFFFFF"))
-
+        #draw the initial background
         pygame.display.flip()
         #clock is set to choose the fps
         self.clock = pygame.time.Clock()
@@ -33,13 +34,10 @@ class Main:
         #Then it sets the mode to menu
         self.selected_mode = 'Menu'
         self.current_mode = None
-        
-        
-        
         #Finally, the mainloop starts
         self.main_loop()
         
-        
+    
     def main_loop(self):
         while 1:
             #set fps

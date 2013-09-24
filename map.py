@@ -42,6 +42,7 @@ class Map():
                     target = Object(int(o.attrib['x']),int(o.attrib['y']),o.tag+'.png',colorkey=None,folder='maps')
                     target.set_message('This is a ' + o.tag)
                     self.objects.append(target)
+                
                 self.entity.append(target)
 
         return self
