@@ -23,13 +23,13 @@ class Status(Image):
         if self.current > self.maximum:
             self.current = self.maximum
         elif self.current < 0 :
-            self.current = 0
+            self.current = 0.0
 
     def render(self,screen):
         x,y = self.rect.x, self.rect.y
         screen.blit(self.symbol,(x-35,y))
         screen.blit(self.image,(x,y))
-        for v in range(self.current):
+        for v in range(int(self.current)):
             screen.blit(self.value,(v*2 + x, y+2))
         
 class Stamina(Status):

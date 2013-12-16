@@ -10,3 +10,4 @@ class Platform(Entity):
         self.image = load_tileset(size,size,tx,ty)
         self.rect = Rect(x,y,size,size)
         self.type = tx,ty
+        

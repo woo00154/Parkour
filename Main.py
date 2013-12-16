@@ -47,7 +47,7 @@ class Main:
                 if self.selected_mode == 'Start':
                     self.current_mode = Game(self.screen)
                 elif self.selected_mode == 'Menu':
-                    self.current_mode = Menu(['Start','Editor','Quit'],self.screen)
+                    self.current_mode = Menu(['Start','Quit'],self.screen)
                 elif self.selected_mode == 'Editor':
                     #self.current_mode = Editor(self.screen)
                     raise SystemExit

@@ -8,7 +8,7 @@ def load_image(name='',colorkey=None,main_folder = 'images',folder=''):
     try:
         image = pygame.image.load(fullname)
     except pygame.error as message:
-        print("Cannot load image:", name)
+        print("Cannot load image:", fullname)
         raise SystemExit
     image = image.convert()
     if colorkey is not None:

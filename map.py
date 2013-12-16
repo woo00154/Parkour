@@ -22,7 +22,7 @@ class Map():
     def load_map(self,folder,name):
         #This should be read from layout.txt
         self.spawn_x = 50
-        self.spawn_y = 2200
+        self.spawn_y = 50
         
         #opens an .oel file and create map from it
         tree = ET.parse(os.path.join('data','maps',folder,name))

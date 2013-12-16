@@ -7,7 +7,7 @@ from status import *
 class Player(Person):
     
     def __init__(self,spawn_x=100,spawn_y=100,entity = []):
-        Person.__init__(self,spawn_x,spawn_y,'player.png')
+        Person.__init__(self,spawn_x,spawn_y,'0.png', 'player\\default')
         self.inputhandler = InputHandler()
         self.admin = self.physics = self.parkour = False
         self.add_basic_movement()
@@ -16,6 +16,8 @@ class Player(Person):
         self.add_stats(entity)
 
         
+    def add_animation(self):    
+        pass
     def add_basic_movement(self):
         self.jumping = self.onGround = self.running = False
         self.inputhandler.add_button('right')
@@ -113,8 +115,7 @@ class Player(Person):
                 #allows a player to run
             if self.status['stamina'].state:
                 if self.get_button('sprint'):
-                    if self.status['stamina'].cost(1):
-                        self.speed_limit = self.sprint_limit
+                    self.speed_limit = self.sprint_limit
                 elif self.running:
                     self.speed_limit = self.run_limit
                 else:
@@ -206,7 +207,9 @@ class Player(Person):
             self.fall_time = 0
         #stamina calculation    
         if self.onGround:
-            if abs(self.xvel) < self.run_limit:
+            if abs(self.xvel) > self.run_limit:
+                self.status['stamina'].cost(.5)
+            elif abs(self.xvel) <= self.run_limit:
                 self.status['stamina'].recover(1)
         #make sure status stays updated
         for s in self.status.values():

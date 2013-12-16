@@ -21,7 +21,7 @@ class Game(Mode):
         self.game_surface = pygame.Surface(game_dimension)
         
         self.stage = Stage(game_dimension)
-        self.stage.load_stage('Stage_1')
+        self.stage.load_stage('round_1')
         self.map = self.stage.rooms[0]
         self.fade = Fade(screen,'in',3)
         #add player
